@@ -27,11 +27,11 @@ public class UserData {
         String gender = userData[5];
 
         try {
-            validateData(lastName, firstName, middleName, dateOfBirth, phoneNumber, gender);
+            ValidateData.validateData(lastName, firstName, middleName, dateOfBirth, phoneNumber, gender);
 
             File file = new File(lastName + ".txt");
             FileWriter writer = new FileWriter(file, true);
-            writer.write(lastName + " " + firstName + " " + middleName + " " + dateOfBirth + " " + phoneNumber + " " + gender + "\n");
+            writer.write(String.format("<%s> <%s> <%s> <%s> <%s> <%s>%n", lastName, firstName, middleName, dateOfBirth, phoneNumber, gender));
             writer.close();
             System.out.println("Данные успешно записаны в файл " + lastName + ".txt");
         } catch (InvalidDataException e) {
@@ -41,29 +41,5 @@ public class UserData {
         }
     }
 
-    public static void validateData(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber, String gender) throws InvalidDataException {
-        // Проверяем формат даты рождения
-        if (!dateOfBirth.matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
-            throw new InvalidDataException("Ошибка: Неверный формат даты рождения");
-        }
-
-        // Проверяем формат номера телефона
-        try {
-            Long.parseLong(phoneNumber);
-        } catch (NumberFormatException e) {
-            throw new InvalidDataException("Ошибка: Номер телефона должен быть целым числом");
-        }
-
-        // Проверяем пол
-        if (!gender.equals("f") && !gender.equals("m")) {
-            throw new InvalidDataException("Ошибка: Неверно указан пол, используйте f или m");
-        }
-    }
-
-    static class InvalidDataException extends Exception {
-        public InvalidDataException(String message) {
-            super(message);
-        }
-    }
 }
 
